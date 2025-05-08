@@ -29,8 +29,15 @@ cuda_available = torch.cuda.is_available()
 device         = torch.device("cuda" if cuda_available else "cpu")
 
 net = UnetModel(n_classes=Nclasses,in_channels=Inchannels,is_deconv=True,is_batchnorm=True) 
-if torch.cuda.is_available():
-    net.cuda()
+
+net = torch.compile(net, mode="max-autotune", backend="inductor")
+
+#net = torch.compile(net)             # Compile the model
+net = net.to(device)                 # Move the compiled model to CPU or GPU
+
+
+# if torch.cuda.is_available():
+#     net.cuda()
 
 # Optimizer we want to use
 optimizer = torch.optim.Adam(net.parameters(),lr=LearnRate)
@@ -49,6 +56,7 @@ if ReUse:
 ########    LOADING TRAINING DATA       ########
 ################################################
 print('***************** Loading Training DataSet *****************')
+print("----TrainSize ------", TrainSize)
 train_set,label_set,data_dsp_dim,label_dsp_dim  = DataLoad_Train(train_size=TrainSize,train_data_dir=train_data_dir, \
                                                                  data_dim=DataDim,in_channels=Inchannels, \
                                                                  model_dim=ModelDim,data_dsp_blk=data_dsp_blk, \
@@ -85,7 +93,7 @@ print ('Learning rate:%.5f'              %  float(LearnRate))
               
 # Initialization
 loss1  = 0.0
-step   = np.int(TrainSize/BatchSize)
+step   = np.int(TrainSize/BatchSize)  ## depricated
 start  = time.time()
 
 for epoch in range(Epochs): 

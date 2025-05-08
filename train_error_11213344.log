@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "FCNVMB_train.py", line 20, in <module>
+    from PathConfig import *
+  File "/home/bhetwal/FCNVMB-Deep-learning-based-seismic-velocity-model-building/PathConfig.py", line 11, in <module>
+    from LibConfig import *
+  File "/home/bhetwal/FCNVMB-Deep-learning-based-seismic-velocity-model-building/LibConfig.py", line 35, in <module>
+    from func.DataLoad_Train import DataLoad_Train
+  File "/home/bhetwal/FCNVMB-Deep-learning-based-seismic-velocity-model-building/func/DataLoad_Train.py", line 13, in <module>
+    from skimage.measure import block_reduce
+  File "/cvmfs/hpcsw.umd.edu/spack-software/2022.06.15/linux-rhel8-zen2/gcc-9.4.0/python-3.8.12-m4izbfupod72qgxj4xogsl2vmivojcew/lib/python3.8/site-packages/skimage/measure/__init__.py", line 7, in <module>
+    from ._polygon import approximate_polygon, subdivide_polygon
+  File "/cvmfs/hpcsw.umd.edu/spack-software/2022.06.15/linux-rhel8-zen2/gcc-9.4.0/python-3.8.12-m4izbfupod72qgxj4xogsl2vmivojcew/lib/python3.8/site-packages/skimage/measure/_polygon.py", line 2, in <module>
+    from scipy import signal
+  File "/cvmfs/hpcsw.umd.edu/spack-software/2022.06.15/linux-rhel8-zen2/gcc-9.4.0/python-3.8.12-m4izbfupod72qgxj4xogsl2vmivojcew/lib/python3.8/site-packages/scipy/signal/__init__.py", line 294, in <module>
+    from ._max_len_seq import max_len_seq
+  File "/cvmfs/hpcsw.umd.edu/spack-software/2022.06.15/linux-rhel8-zen2/gcc-9.4.0/python-3.8.12-m4izbfupod72qgxj4xogsl2vmivojcew/lib/python3.8/site-packages/scipy/signal/_max_len_seq.py", line 8, in <module>
+    from ._max_len_seq_inner import _max_len_seq_inner
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.26' not found (required by /cvmfs/hpcsw.umd.edu/spack-software/2022.06.15/linux-rhel8-zen2/gcc-9.4.0/python-3.8.12-m4izbfupod72qgxj4xogsl2vmivojcew/lib/python3.8/site-packages/scipy/signal/_max_len_seq_inner.cpython-38-x86_64-linux-gnu.so)

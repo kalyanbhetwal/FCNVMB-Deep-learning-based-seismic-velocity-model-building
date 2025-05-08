@@ -25,9 +25,9 @@ dh            = 10            # Space interval
 ####             NETWORK PARAMETERS             ####
 ####################################################
 if SimulateData:
-    Epochs        = 100       # Number of epoch
-    TrainSize     = 1600      # Number of training set
-    TestSize      = 100       # Number of testing set
+    Epochs        = 50       # Number of epoch
+    TrainSize     = 600     # Number of training set
+    TestSize      = 50       # Number of testing set
     TestBatchSize = 10
 else:
     Epochs        = 50

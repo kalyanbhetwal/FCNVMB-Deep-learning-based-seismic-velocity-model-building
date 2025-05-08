@@ -21,6 +21,7 @@ class unetConv2(nn.Module):
         super(unetConv2, self).__init__()
         # Kernel size: 3*3, Stride: 1, Padding: 1
         if is_batchnorm:
+            #time tthe conv2d and batchnorm2d. find which one is taking more time
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
                                        nn.BatchNorm2d(out_size),
                                        nn.ReLU(inplace=True),)

@@ -1,0 +1,14 @@
+/home/bhetwal/.local/lib/python3.8/site-packages/torch/nn/modules/conv.py:459: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:80.)
+  return F.conv2d(input, weight, bias, self.stride,
+/home/bhetwal/FCNVMB-Deep-learning-based-seismic-velocity-model-building/func/utils.py:98: UserWarning: FixedFormatter should only be used together with FixedLocator
+  ax.set_xticklabels(('0','20','40','60','80','100'))
+findfont: Font family ['Times New Roman'] not found. Falling back to DejaVu Sans.
+findfont: Font family ['Times New Roman'] not found. Falling back to DejaVu Sans.
+Traceback (most recent call last):
+  File "FCNVMB_train.py", line 159, in <module>
+    SaveTrainResults(loss=loss1,SavePath=results_dir,font2=font2,font3=font3)
+  File "/home/bhetwal/FCNVMB-Deep-learning-based-seismic-velocity-model-building/func/utils.py", line 108, in SaveTrainResults
+    plt.show(fig)
+  File "/cvmfs/hpcsw.umd.edu/spack-software/2022.06.15/linux-rhel8-zen2/gcc-9.4.0/python-3.8.12-m4izbfupod72qgxj4xogsl2vmivojcew/lib/python3.8/site-packages/matplotlib/pyplot.py", line 378, in show
+    return _backend_mod.show(*args, **kwargs)
+TypeError: show() takes 1 positional argument but 2 were given
