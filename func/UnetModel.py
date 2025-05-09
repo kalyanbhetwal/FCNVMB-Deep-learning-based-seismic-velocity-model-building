@@ -15,6 +15,21 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from func.batchnorm2d import *
+
+
+class TritonBatchNorm2d(torch.nn.Module):
+    def __init__(self, num_features, eps=1e-5):
+        super().__init__()
+        self.num_features = num_features
+        self.eps = eps
+        self.weight = torch.nn.Parameter(torch.ones(num_features))
+        self.bias = torch.nn.Parameter(torch.zeros(num_features))
+
+    def forward(self, x):
+        return TritonBatchNormFunction.apply(x, self.weight, self.bias, self.eps)
+
+
 
 class unetConv2(nn.Module):
     def __init__(self, in_size, out_size, is_batchnorm):
@@ -23,10 +38,12 @@ class unetConv2(nn.Module):
         if is_batchnorm:
             #time tthe conv2d and batchnorm2d. find which one is taking more time
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
-                                       nn.BatchNorm2d(out_size),
+                                       #nn.BatchNorm2d(out_size),
+                                        TritonBatchNorm2d(out_size),
                                        nn.ReLU(inplace=True),)
             self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
-                                       nn.BatchNorm2d(out_size),
+                                      #nn.BatchNorm2d(out_size),
+                                       TritonBatchNorm2d(out_size),
                                        nn.ReLU(inplace=True),)
         else:
             self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),

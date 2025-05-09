@@ -38,7 +38,7 @@ truthname     = tagV1
 ####                   PATHS                  #####
 ###################################################
  
-main_dir   = '/scratch/zt1/project/cmsc828/user/bhetwal/'     # Replace your main path here
+main_dir   = '/home/kalyan/'     # Replace your main path here
 
 ## Check the main directory
 if len(main_dir) == 0:

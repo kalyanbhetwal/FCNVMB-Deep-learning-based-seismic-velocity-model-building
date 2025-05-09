@@ -3,6 +3,43 @@ import triton
 import triton.language as tl
 import time
 
+class TritonBatchNormFunction(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, x, weight, bias, eps):
+        with torch.no_grad():
+            y, mean, var = batchnorm2d_triton(x, weight, bias, eps)
+
+        ctx.save_for_backward(x, mean, var, weight, bias)
+        ctx.eps = eps
+        return y
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        x, mean, var, weight, bias = ctx.saved_tensors
+        eps = ctx.eps
+
+        N, C, H, W = x.shape
+        M = N * H * W
+
+        std_inv = 1.0 / torch.sqrt(var + eps)
+
+        # compute gradients
+        x_hat = (x - mean[None, :, None, None]) * std_inv[None, :, None, None]
+        grad_weight = torch.sum(grad_output * x_hat, dim=(0, 2, 3))
+        grad_bias = torch.sum(grad_output, dim=(0, 2, 3))
+
+        grad_x_hat = grad_output * weight[None, :, None, None]
+        grad_var = torch.sum(grad_x_hat * (x - mean[None, :, None, None]) * -0.5 * std_inv[None, :, None, None]**3, dim=(0, 2, 3))
+        grad_mean = torch.sum(grad_x_hat * -std_inv[None, :, None, None], dim=(0, 2, 3)) + \
+                    grad_var * torch.mean(-2.0 * (x - mean[None, :, None, None]), dim=(0, 2, 3))
+
+        grad_input = grad_x_hat * std_inv[None, :, None, None] + \
+                     grad_var[None, :, None, None] * 2.0 * (x - mean[None, :, None, None]) / M + \
+                     grad_mean[None, :, None, None] / M
+
+        return grad_input, grad_weight, grad_bias, None  # None for eps
+
+
 @triton.autotune(
     configs=[
         triton.Config({"BLOCK_SIZE": 512}, num_stages=1, num_warps=2),
@@ -119,7 +156,7 @@ def batchnorm2d_norm_pass(x_ptr, y_ptr, mean_ptr, var_ptr, weight_ptr, bias_ptr,
         y = weight * (x - mean) * inverse + bias
         tl.store(y_ptr + offset_ptr, y, mask=masking_index)
 
-#@torch.compile(fullgraph=True)
+@torch.compile(fullgraph=True)
 def batchnorm2d_triton(x, weight, bias, eps=1e-5):
 
     N, C, H, W = x.shape
@@ -156,6 +193,9 @@ def batchnorm2d_triton(x, weight, bias, eps=1e-5):
     )
 
     return y, mean, var
+
+
+
 
 
 def test_and_benchmark():
@@ -198,6 +238,6 @@ def test_and_benchmark():
     print(f"Percentage Speedup:  {speedup:.4f} .")
     print(f"Times Speedup:  {t_speed:.4f} .")
 
-test_and_benchmark()
+#test_and_benchmark()
 
 

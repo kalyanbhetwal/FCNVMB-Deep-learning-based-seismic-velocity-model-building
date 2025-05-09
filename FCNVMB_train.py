@@ -93,7 +93,7 @@ print ('Learning rate:%.5f'              %  float(LearnRate))
               
 # Initialization
 loss1  = 0.0
-step   = np.int(TrainSize/BatchSize)  ## depricated
+step   = int(TrainSize/BatchSize)  ## depricated
 start  = time.time()
 
 for epoch in range(Epochs): 

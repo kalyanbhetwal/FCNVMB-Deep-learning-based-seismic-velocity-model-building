@@ -14,7 +14,7 @@ echo "Job started at: $(date)"
 
 module load gcc/11.3.0
 # Activate virtual environment
-source /scratch/zt1/project/cmsc828/user/bhetwal/geo/bin/activate
+source /home/kalyan/.venv/bin/activate
 
 # Time the execution and log it
 SECONDS=0
