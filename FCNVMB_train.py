@@ -28,13 +28,19 @@ from LibConfig import *
 cuda_available = torch.cuda.is_available()
 device         = torch.device("cuda" if cuda_available else "cpu")
 
+# net = UnetModel(n_classes=Nclasses,in_channels=Inchannels,is_deconv=True,is_batchnorm=True) 
+
+# net = torch.compile(net, mode="max-autotune", backend="inductor")
+
+# #net = torch.compile(net)             # Compile the model
+# net = net.to(device)                 # Move the compiled model to CPU or GPU
+
 net = UnetModel(n_classes=Nclasses,in_channels=Inchannels,is_deconv=True,is_batchnorm=True) 
+if torch.cuda.is_available():
+    net.cuda()
 
-net = torch.compile(net, mode="max-autotune", backend="inductor")
-
-#net = torch.compile(net)             # Compile the model
-net = net.to(device)                 # Move the compiled model to CPU or GPU
-
+# Optimizer we want to use
+optimizer = torch.optim.Adam(net.parameters(),lr=LearnRate)
 
 # if torch.cuda.is_available():
 #     net.cuda()

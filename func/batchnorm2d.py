@@ -6,8 +6,9 @@ import time
 class TritonBatchNormFunction(torch.autograd.Function):
     @staticmethod
     def forward(ctx, x, weight, bias, eps):
-        with torch.no_grad():
-            y, mean, var = batchnorm2d_triton(x, weight, bias, eps)
+        #with torch.no_grad():
+        
+        y, mean, var = batchnorm2d_triton(x, weight, bias, eps)
 
         ctx.save_for_backward(x, mean, var, weight, bias)
         ctx.eps = eps
