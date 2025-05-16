@@ -1,12 +1,12 @@
-## Introduction
-
+## The Vendor Problem: Training at the Far Edge
+Kernel optimized Unet Model for sesmic inversion problems.
 
 ## Dataset
 
 For the training process, we generate the simulated velocity models and their corresponding measurement by solving the acoustic wave equation.
 
 ## Training & Testing
-
+The script FCNVMB_train_orig.py runs  baseline model without any kernel optimization.
 The scripts FCNVMB_train.py and FCNVMB_test.py are implemented for training and testing. If you want to train your own network, please firstly checkout the files named ParamConfig.py and PathConfig.py, to be sure that all the parameters and the paths are consistent, e.g.
 ```
 ####################################################
@@ -63,7 +63,7 @@ Then checkout these two main files to train/test the network, simply type
 python FCNVMB_train.py
 python FCNVMB_test.py
 ```
-
+Please run python FCNVMB_train_orig.py baseline model training time.
 
 ## Enviroment Requirement
 
